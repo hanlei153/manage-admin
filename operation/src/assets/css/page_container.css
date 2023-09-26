@@ -1,0 +1,9 @@
+.page_container {
+    position: absolute;
+    width: 100%;
+    min-height: 100vh; /* 让容器至少铺满视口高度 */
+    background-color:#00000046; /* 半透明黑色背景 */
+    justify-content: center;
+    align-items: center;
+    z-index: 9998;
+  }

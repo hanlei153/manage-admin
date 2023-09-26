@@ -1,0 +1,18 @@
+version: "3"
+services:
+  mysql:
+    container_name: mysql
+    image: mysql:5.7.17
+    ports: 
+      - "3306:3306"
+    volumes:
+      - /data/mysql:/var/lib/mysql
+      - /etc/localtime:/etc/localtime:ro
+      - /data/mysql-conf/mysqld.cnf:/etc/mysql/mysql.conf.d/mysqld.cnf
+    environment:
+      - MYSQL_ROOT_PASSWORD=123.com
+      - character-set-server=utf8
+      - collation-server=utf8_bin
+    restart: always
+    security_opt:
+      - seccomp:unconfined #忽略docker安全验证

@@ -1,0 +1,25 @@
+operation/dist
+operation/node_modules
+
+# local env files
+operation/.env.local
+operation/.env.*.local
+
+# Log files
+operation/npm-debug.log*
+operation/yarn-debug.log*
+operation/yarn-error.log*
+operation/pnpm-debug.log*
+
+# Editor directories and files
+operation/.idea
+operation/.vscode
+operation/*.suo
+operation/*.ntvs*
+operation/*.njsproj
+operation/*.sln
+operation/*.sw?
+
+
+operation-Tools/logs/server.log*
+operation-Tools/下架.py
