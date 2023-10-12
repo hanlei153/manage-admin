@@ -70,16 +70,90 @@
                 </el-row>
                 <div class="center-container">
                     <el-row :gutter="250">
-                        
+                        <el-col :span="12" class="centered-col">
+                            <!-- <div class="center-container"> -->
+                                <el-button @click="editProduct()">确定</el-button>
+                            <!-- </div> -->
+                        </el-col>
                         <el-col :span="12" class="centered-col">
                             <!-- <div class="center-container"> -->
                                 <el-button @click="showEditProduct = false">取消</el-button>
                             <!-- </div> -->
                         </el-col>
-                        <el-col :span="12" class="centered-col">
-                            <!-- <div class="center-container"> -->
-                                <el-button @click="editProduct()">确定</el-button>
-                            <!-- </div> -->
+                    </el-row>
+                </div>
+            </div>
+        </div>
+
+        <!-- 删除产品确认窗口 -->
+        <div v-if="showDeleteProduct" class="page_container">
+            <div v-if="showDeleteProduct" class="div_DeleteProduct">
+                <div class="center-container">
+                    <el-row :gutter="250">
+                        <el-col :span="24">
+                            <span>确定删除该产品吗？</span>
+                        </el-col>
+                    </el-row>
+                    
+                </div>
+                <div class="center-container_delete_product">
+                    <el-row :gutter="250">
+                        <el-col :span="12">
+                                <el-button @click="DeleteProduct()">确定</el-button>
+                        </el-col>
+                        <el-col :span="12">
+                                <el-button @click="showDeleteProduct = false">取消</el-button>
+                        </el-col>
+                    </el-row>
+                </div>
+            </div>
+        </div>
+
+        <!-- 下单窗口 -->
+        <div v-if="showPlace_an_order_window" class="page_container">
+            <div v-if="showPlace_an_order_window" class="div_Place_an_order_window">
+                <div class="center-container">
+                    <el-row :gutter="250">
+                        <el-col :span="24">
+                            <span>创建订单</span>
+                        </el-col>
+                    </el-row>
+                </div>
+
+                <el-row style="margin-top:20px; margin-left: 20px">
+                    <el-col :span="12">
+                        <span>产&nbsp;品&nbsp;&nbsp;&nbsp;ID：</span><el-input v-model="EditProductID" placeholder="请输入内容" type="text" :clearable="true" disabled></el-input>
+                    </el-col>
+                    <el-col :span="12">
+                        <span>产品名称：</span><el-input v-model="EditProductName" placeholder="请输入内容" type="text" :clearable="true" disabled></el-input>
+                    </el-col>
+                </el-row>
+                <el-row style="margin-top:10px; margin-left: 20px">
+                    <el-col :span="12">
+                        <span>产品状态：</span>
+                        <el-input v-model="EditProductStatus" placeholder="请输入上架/下架" type="text" :clearable="true" disabled></el-input>
+                    </el-col>
+                    <el-col :span="12">
+                        <span>产品价格：</span><el-input v-model="EditProductPrice" placeholder="请输入内容" type="text" :clearable="true" disabled></el-input>
+                    </el-col>
+                </el-row>
+                <el-row style="margin-top:10px; margin-left: 20px">
+                    <el-col :span="24">
+                        <span>订单数量：</span>
+                        <!-- <template>  选择器i不显示，待解决
+                            <el-input-number v-model="Order_Quantity" :min="1" :max="10" @change="handleChange"></el-input-number>
+                        </template> -->
+                        <el-input v-model="Order_Quantity" placeholder="请输入下单数量" type="text" :clearable="true" ></el-input>
+                    </el-col>
+                </el-row>
+
+                <div class="center-container_place_an_order">
+                    <el-row :gutter="250">
+                        <el-col :span="12">
+                                <el-button @click="Place_an_order()">确定</el-button>
+                        </el-col>
+                        <el-col :span="12">
+                                <el-button @click="showPlace_an_order_window = false">取消</el-button>
                         </el-col>
                     </el-row>
                 </div>
@@ -131,13 +205,18 @@
                 <el-col :span="24">
                     <div class="example-pagination-block">
                         <el-table :data="tableData" style="margin-left: 30px; margin-right: 30px;" class="example-demonstration">
-                            <el-table-column prop="id" label="ID"  show-overflow-tooltip/>
-                            <el-table-column prop="Name" label="产品名称"  show-overflow-tooltip/>
-                            <el-table-column prop="status" label="产品状态"  show-overflow-tooltip/>
-                            <el-table-column prop="price" label="产品价格"  show-overflow-tooltip/>
-                            <el-table-column prop="on" label="上架时间"  show-overflow-tooltip/>
-                            <el-table-column prop="off" label="下架时间"  show-overflow-tooltip/>
-                            <el-table-column prop="caozuo" label="操作"  show-overflow-tooltip>
+                            <el-table-column prop="id" label="ID" min-width="5%" show-overflow-tooltip/>
+                            <el-table-column prop="Name" label="产品名称" min-width="10%" show-overflow-tooltip/>
+                            <el-table-column prop="status" label="产品状态" min-width="10%" show-overflow-tooltip/>
+                            <el-table-column prop="price" label="产品价格" min-width="10%" show-overflow-tooltip/>
+                            <el-table-column prop="on" label="上架时间" min-width="20%" show-overflow-tooltip/>
+                            <el-table-column prop="off" label="下架时间" min-width="20%" show-overflow-tooltip/>
+                            <el-table-column prop="place_an_order" label="下单" min-width="5%" show-overflow-tooltip>
+                                <template v-slot="scope">
+                                    <span class="place_an_order" @click="place_an_order(scope.row);">下单</span>
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="operate" label="操作" min-width="20%" show-overflow-tooltip>
                                 <template v-slot="scope">
                                     <el-button type="primary" icon="Edit" @click="editRow(scope.row);">编辑</el-button>
                                     <el-button type="danger" icon="Delete" @click="deleteRow(scope.row)">删除</el-button>
@@ -166,6 +245,8 @@ export default {
             //消息提示
             ElMessage,
             showEditProduct: null,
+            showDeleteProduct: null,
+            showPlace_an_order_window: null,
             showAddProduct: false,
             AddProductName: null,
             AddProductPrice: null,
@@ -178,6 +259,7 @@ export default {
             EditProductPrice: null,
             EditProductOn: null,
             EditProductOff: null,
+            Order_Quantity: 1,
             options: [
                 {
                   value: '已上架',
@@ -254,6 +336,56 @@ export default {
                 }
             })
         },
+        place_an_order(row) {
+            this.EditProductID = row['id']
+            this.EditProductName = row['Name']
+            this.EditProductStatus = row['status']
+            this.EditProductPrice = row['price']
+            this.showPlace_an_order_window = true
+        },
+        Place_an_order() {
+            const ProductData = {
+                Order_Quantity: this.Order_Quantity,
+                ProductName: this.EditProductName,
+                ProductPrice: this.EditProductPrice ,
+                place_an_order: null
+            }
+            fetch(config.backendUrl + '/place_an_order', {
+                method: 'post',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(ProductData),
+                mode: 'cors',
+            })
+            .then(response => response.json())
+            .then(response => {
+                if (response.error_code == 0 && response.msg == '插入完成') {
+                    this.ElMessage({
+                        message: '产品下单成功！',
+                        type: 'success',
+                    })
+                    this.showPlace_an_order_window = false
+                    this.sreachProduct()
+                } else {
+                    this.ElMessage({
+                        message: '产品下单失败！',
+                        type: 'error',
+                    })
+                    this.showPlace_an_order_window = false
+                    this.sreachProduct()
+                }
+            })
+            .catch( err => {
+                console.log(err)
+                this.ElMessage({
+                        message: '产品下单失败！',
+                        type: 'error',
+                    })
+                this.showPlace_an_order_window = false
+                this.sreachProduct()
+            })
+        },
         editRow(row) {
             // 编辑行的逻辑，你可以在这里打开一个编辑对话框或者跳转到编辑页面
             this.EditProductID = row['id']
@@ -285,13 +417,45 @@ export default {
                 type: 'success',
             })
             this.showEditProduct = false
-            console.log('执行了刷新按钮')
             this.sreachProduct()
 
         },
         deleteRow(row) {
             // 删除行的逻辑，你可以在这里弹出确认框，并根据用户的选择执行删除操作
-            console.log('删除行', row);
+            this.EditProductID = row['id']
+            this.showDeleteProduct = true
+        },
+        DeleteProduct() {
+            const ProductData = {
+                ProductID: this.EditProductID,
+                DeleteProduct: null
+            }
+            fetch(config.backendUrl + '/Edit_Del_Product', {
+                method: 'post',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(ProductData),
+                mode: 'cors',
+            })
+            .then(response => response.json())
+            .then(response => {
+                if (response.error_code == 0 && response.msg == '删除完成') {
+                    this.ElMessage({
+                        message: '产品删除成功！',
+                        type: 'success',
+                    })
+                    this.showDeleteProduct = false
+                    this.sreachProduct()
+                } else {
+                    this.ElMessage({
+                        message: '产品操作失败！',
+                        type: 'success',
+                    })
+                    this.showDeleteProduct = false
+                    this.sreachProduct()
+                }
+            })
         },
     }
 }
@@ -316,6 +480,13 @@ export default {
     
     .el-table {
         width: auto;
+    }
+
+    .place_an_order:hover {
+        color: rgb(20, 192, 14);
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
     }
 
     .example-pagination-block + .example-pagination-block {
@@ -346,6 +517,42 @@ export default {
         background-color: #ffffff;
         box-shadow: 0px 0px 10px #222222;
         z-index: 9999;
+    }
+
+    .div_DeleteProduct {
+        position: absolute;
+        top: 25%;
+        left: 30%;
+        width: 500px;
+        height: 200px;
+        border: 1px solid #ffffff;
+        background-color: #ffffff;
+        box-shadow: 0px 0px 10px #222222;
+        z-index: 9999;
+    }
+
+    .div_Place_an_order_window {
+        position: absolute;
+        top: 25%;
+        left: 25%;
+        width: 500px;
+        height: 320px;
+        border: 1px solid #ffffff;
+        background-color: #ffffff;
+        box-shadow: 0px 0px 10px #222222;
+        z-index: 9999;
+    }
+
+    .center-container_place_an_order {
+        display: flex;
+        justify-content: center; /* 水平居中 */
+        margin-top: 20px;
+    }
+
+    .center-container_delete_product {
+        display: flex;
+        justify-content: center; /* 水平居中 */
+        margin-top: 50px;
     }
     .center-container {
         display: flex;

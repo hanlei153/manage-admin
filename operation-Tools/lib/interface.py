@@ -304,5 +304,56 @@ def Edit_Del_Product():
                 my_db(update_sql)
                 res = {'error_code': 0, 'msg': '更新完成'}
                 return res
+    elif "DeleteProduct" in data:
+        ProductID = data['ProductID']
+        delete_sql = "DELETE FROM ProductTable WHERE ID = {}".format(ProductID)
+        if my_db(delete_sql):
+            return {'error_code': 0, 'msg': '删除完成'}
+        else:
+            return {'error_code': 1, 'msg': '操作失败'}
     res = {'error_code': 1, 'msg': '操作失败'}
     return res
+########################################################################################################################
+# 
+@server.route('/place_an_order', methods=['post'])
+def place_an_order():
+    data = flask.request.json
+    if "place_an_order" in data:
+        Order_Quantity = data['Order_Quantity']
+        insert_sql = "INSERT INTO Transactions (ProductName, ProductPrice, isRefund, TransactionTime) VALUES ('{}', {}, 0, NOW())".format(data['ProductName'], data['ProductPrice'])
+        for i in range(int(Order_Quantity)):
+            my_db(insert_sql)
+        return  {'error_code': 0, 'msg': '插入完成'}
+    return  {'error_code': 1, 'msg': '操作失败'}
+
+########################################################################################################################
+# 订单管理接口
+@server.route('/order_management', methods=['post'])
+def order_management():
+    data = flask.request.json
+    if 'searchOrder' in data:
+        OrderID = data['OrderID']
+        ProductName = data['ProductName']
+        if OrderID == None and ProductName == None:
+            select_sql = 'SELECT ID, ProductName, isRefund, ProductPrice, TransactionTime FROM Transactions'
+            select_result = my_db(select_sql)
+            res = {'error_code': 0, 'msg': '查询完成', 'data': select_result}
+            return res
+        elif OrderID != None or ProductName != None:
+            # 构建查询语句
+            print('hhhh')
+            query = "SELECT ID, ProductName, isRefund, ProductPrice, TransactionTime FROM Transactions WHERE 1=1"  # 初始查询语句
+            if OrderID:
+                query += f" AND ID = '{OrderID}'"
+            if ProductName:
+                query += f" AND ProductName = '{ProductName}'"
+            select_result = my_db(query)
+            res = {'error_code': 0, 'msg': '查询完成', 'data': select_result}
+            return res
+    # 退款处理逻辑
+    elif 'Refund' in data:
+        OrderID = data['OrderID']
+        update_sql = "UPDATE Transactions SET isRefund = 1 WHERE ID = {};".format(OrderID)
+        my_db(update_sql)
+        return  {'error_code': 0, 'msg': '更新完成'}
+    return {'error_code': 1, 'msg': '查询失败'}

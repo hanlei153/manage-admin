@@ -27,26 +27,26 @@ const routes = [
     ]
   },
   {
-    path: '/Order',
-    name: '其他',
-    redirect: '/Order/OrderPage1',
+    path: '/Sales_Data',
+    name: '销售数据',
+    redirect: '/Sales_Data/order_management',
     component: LayoutPage,
     meta: { 
-      title: '其他'
+      title: '销售数据'
     },
     children: [
       { 
-        path: 'OrderPage1',
-        name: '其他1',
-        component:()=>import('@/components/views/orderPage.vue'),
+        path: 'order_management',
+        name: '订单管理',
+        component:()=>import('@/components/views/Sales_Data/order_management.vue'),
         meta: {
-          title: '其他1',
+          title: '订单管理',
         } 
       },
       {
         path: 'OrderPage2',
         name: '其他2',
-        redirect: '/Order/OrderPage2/OrderPage2-1',
+        redirect: '/Sales_Data/OrderPage2/OrderPage2-1',
         meta: { 
           title: '其他2' 
         },
@@ -63,11 +63,11 @@ const routes = [
   },
   {
     path: '/Product',
-    name: '产品',
+    name: '产品管理',
     component: LayoutPage,
     redirect: '/Product/Enter_product',
     meta: { 
-      title: '产品' 
+      title: '产品管理' 
     },
     children: [
       { 

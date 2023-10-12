@@ -133,7 +133,7 @@
             <el-sub-menu index="2">
                     <template #title>
                       <el-icon><Document /></el-icon>
-                      <span>产品</span>
+                      <span>产品管理</span>
                     </template>
                     
                     <el-menu-item-group>
@@ -152,16 +152,16 @@
             </el-sub-menu>
             <el-sub-menu index="3">
                     <template #title>
-                      <el-icon><Menu /></el-icon>
-                      <span>其他</span>
+                      <el-icon><PhoneFilled /></el-icon>
+                      <span>销售数据</span>
                     </template>
                     <el-menu-item-group>
-                      <router-link to="/Order/OrderPage1" class="custom_router_link">
+                      <router-link to="/Sales_Data/order_management" class="custom_router_link">
                         <el-menu-item index="3-1">
-                         <span>其他1</span>
+                         <span>订单管理</span>
                         </el-menu-item>
                       </router-link>
-                      <router-link to="/Order/OrderPage2/OrderPage2-1" class="custom_router_link">
+                      <router-link to="/Sales_Data/OrderPage2/OrderPage2-1" class="custom_router_link">
                         <el-sub-menu index="3-2">
                           <template #title>其他2</template>
                           <el-menu-item index="3-2-1">
