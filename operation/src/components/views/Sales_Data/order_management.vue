@@ -295,4 +295,7 @@ export default {
       font-size: 14px;
       margin-bottom: 20px;
     }
+    .el-picker-panel__shortcut {
+        white-space: nowrap;
+    }
 </style>
