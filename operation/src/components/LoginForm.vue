@@ -1,7 +1,10 @@
 <template>
-  <h1>Welcome to My Vue App</h1>
-  <p>This is the homepage of your Vue.js application.</p>
-  <img alt="Vue logo" src="../assets/logo.png">
+    <div class="center-content">
+      <h1>Welcome to My Vue App</h1>
+      <p>This is the homepage of your Vue.js application.</p>
+      <img alt="Vue logo" src="../assets/logo.png">
+    </div>
+
     <div class="login-container">
       <h2>Login</h2>
       <form @submit.prevent="login">
@@ -79,7 +82,14 @@
   
   <style>
   /* 添加适当的样式来美化登录页面 */
-
+  .center-content {
+    text-align: center; /* 居中文本 */
+  }
+  
+  .center-content img {
+    display: block; /* 将图像设置为块级元素，以便水平居中 */
+    margin: 0 auto; /* 通过左右边距自动居中图像 */
+  }
   .login-container {
     max-width: 350px;
     margin: 0 auto;
