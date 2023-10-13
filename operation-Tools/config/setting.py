@@ -1,5 +1,5 @@
 MYSQL_INFO = {
-    'host':'192.168.0.164',
+    'host':'127.0.0.1',
     'user':'root',
     'passwd':'123.com',
     'db':'operation',
@@ -10,4 +10,4 @@ REDIS_INFO = {
     'port': 6379,
     'db': 0
 }
-SERVER_PORT = 8888
+SERVER_PORT = 8889

@@ -334,19 +334,25 @@ def order_management():
     if 'searchOrder' in data:
         OrderID = data['OrderID']
         ProductName = data['ProductName']
-        if OrderID == None and ProductName == None:
-            select_sql = 'SELECT ID, ProductName, isRefund, ProductPrice, TransactionTime FROM Transactions'
+        DateRange = data['DateRange']
+        if OrderID == None and ProductName == None and DateRange == None:
+            select_sql = 'SELECT ID, ProductName, isRefund, ProductPrice, TransactionTime FROM Transactions ORDER BY ID DESC'
             select_result = my_db(select_sql)
             res = {'error_code': 0, 'msg': '查询完成', 'data': select_result}
             return res
-        elif OrderID != None or ProductName != None:
+        elif OrderID != None or ProductName != None or DateRange != None:
             # 构建查询语句
-            print('hhhh')
             query = "SELECT ID, ProductName, isRefund, ProductPrice, TransactionTime FROM Transactions WHERE 1=1"  # 初始查询语句
             if OrderID:
                 query += f" AND ID = '{OrderID}'"
             if ProductName:
                 query += f" AND ProductName = '{ProductName}'"
+            if DateRange:
+                start_time = datetime.strptime(DateRange[0], "%Y-%m-%dT%H:%M:%S.%fZ").date()
+                end_time = datetime.strptime(DateRange[1], "%Y-%m-%dT%H:%M:%S.%fZ").date()
+                query += f" AND TransactionTime  BETWEEN '{start_time}' AND '{end_time}'"
+            # 倒序查询结果
+            query += " ORDER BY ID DESC"
             select_result = my_db(query)
             res = {'error_code': 0, 'msg': '查询完成', 'data': select_result}
             return res

@@ -14,19 +14,6 @@ from flask_cors import CORS
 from logging.handlers import RotatingFileHandler
 
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-handler = RotatingFileHandler('./logs/server.log', maxBytes=10000, backupCount=1)
-handler.setLevel(logging.INFO)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-handler.setFormatter(formatter)
-logger.addHandler(handler)
-
-logger.info("Start print log")
-# logger.debug("Do something")
-# logger.warning("Something maybe fail.")
-logger.info("Start Finish")
-
 # 允许跨域请求
 CORS(server, resources={r"/*": {"origins": "*"}})
 

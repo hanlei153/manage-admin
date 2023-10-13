@@ -29,24 +29,37 @@
      <el-scrollbar height="calc(100vh - 60px)">
         <div style="background-color: #ffffff; margin-top: 20px; margin-left: 20px; margin-right: 20px; border-radius: 10px;">
             <el-row :gutter="20" class="el-row-div1">
-                <el-col :span="9">
+                <el-col :span="6">
                     <div class="grid-content ep-bg-purple" style="white-space: nowrap; margin-left: 20px;">
                         <div>订单ID：</div>
                         <el-input v-model="OrderID" placeholder="请输入内容" type="text" :clearable="true"></el-input>
                     </div>
                 </el-col>
-                <el-col :span="9">
+                <el-col :span="6">
                     <div class="grid-content ep-bg-purple" style="white-space: nowrap;">
                         <div>产品名称：</div>
                             <el-input v-model="ProductName" placeholder="请输入内容" type="text" :clearable="true"></el-input>
                     </div>
                 </el-col>
-                <!-- <el-col :span="6">
-                    <div class="grid-content ep-bg-purple" >
-                        <div>日期范围：</div>
-                        全部
+                <el-col :span="6">
+                    <div class="grid-content ep-bg-purple" style="white-space: nowrap; margin-left: 30px;">
+                        <div>&nbsp;&nbsp;日期范围：</div>
+                        <div class="daterange-picker">
+                            <div class="block">
+                                <el-date-picker
+                                  v-model="daterange"
+                                  type="daterange"
+                                  unlink-panels
+                                  range-separator="To"
+                                  start-placeholder="Start date"
+                                  end-placeholder="End date"
+                                  :shortcuts="shortcuts"
+                                  :size="size"
+                                />
+                            </div>
+                        </div>
                     </div>
-                </el-col> -->
+                </el-col>
                 <el-col :span="6">
                     <div class="grid-content ep-bg-purple" >
                         <div>
@@ -80,10 +93,11 @@
      </el-scrollbar>
 </template>
 
-<script>
+<script scope>
 import config from '@/components/config.json';
 import { convertDateFormat } from "@/assets/js/dateUtils";
 import { ElMessage } from 'element-plus'
+import { ref } from 'vue'
 
 export default {
     data() {
@@ -99,6 +113,37 @@ export default {
           Trading_Hours: null,
           tableData: [],
           backendUrl: config.backendUrl,
+
+          daterange: ref(''),
+          shortcuts: [
+  {
+    text: 'Last week',
+    value: () => {
+      const end = new Date()
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 7)
+      return [start, end]
+    },
+  },
+  {
+    text: 'Last month',
+    value: () => {
+      const end = new Date()
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
+      return [start, end]
+    },
+  },
+  {
+    text: 'Last 3 months',
+    value: () => {
+      const end = new Date()
+      const start = new Date()
+      start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
+      return [start, end]
+    },
+  },
+]
         }
     },
     mounted() {
@@ -109,6 +154,7 @@ export default {
         const ProductData = {
                 OrderID: this.OrderID,
                 ProductName: this.ProductName,
+                DateRange: this.daterange,
                 searchOrder: null
             }
             console.log(ProductData)
@@ -225,4 +271,28 @@ export default {
         transition: all 0.3s;
     }
     
+    .daterange-picker {
+      display: flex;
+      width: 100%;
+      padding: 0;
+      flex-wrap: wrap;
+    }
+    
+    .daterange-picker .block {
+      padding: 30px 0;
+      text-align: center;
+      border-right: solid 1px var(--el-border-color);
+      flex: 1;
+    }
+    
+    .daterange-picker .block:last-child {
+      border-right: none;
+    }
+    
+    .daterange-picker .demonstration {
+      display: block;
+      color: var(--el-text-color-secondary);
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
 </style>
