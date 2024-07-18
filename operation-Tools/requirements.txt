@@ -11,7 +11,6 @@ Flask==2.2.3
 Flask-Cors==3.0.10
 future==0.18.3
 gevent==22.10.2
-greenlet==2.0.2
 idna==3.4
 importlib-metadata==6.0.0
 itsdangerous==2.1.2
